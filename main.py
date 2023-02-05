@@ -18,3 +18,4 @@ while True:
     
     with open("data.json", "w") as outfile:
         json.dump(data, outfile)
+    print(data)
