@@ -1,4 +1,4 @@
-import serial,json
+import serial,json,csv,datetime
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 
@@ -18,4 +18,8 @@ while True:
     
     with open("data.json", "w") as outfile:
         json.dump(data, outfile)
-    print(data)
+        print(data)
+        
+    with open("data.csv", "a") as outfile:
+        writer = csv.writer(outfile)
+        
