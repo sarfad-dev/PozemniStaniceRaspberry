@@ -6,13 +6,13 @@ data = {}
 
 while True:
     read_line = ser.readline().decode("utf-8").strip('\n').strip('\r')
-    if read_line[-2:]== "16":
+    if read_line[-3:]== " 16":
         pressure = float(read_line[:-3]) / 10
         data["pressure"] = pressure
-    elif read_line[-2:]=="24":
+    elif read_line[-3:]==" 24":
         temperature = float(read_line[:-3]) / 10
         data["temperature"] = temperature
-    elif read_line[-2:]=="32":
+    elif read_line[-3:]==" 32":
         humidity = float(read_line[:-3]) / 10
         data["humidity"] = humidity
     
