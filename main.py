@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 from mysql.connector import Error
 import mysql.connector
+from dotenv import load_dotenv
+
+load_dotenv()
 
 serial = serial.Serial('/dev/ttyS0', 115200, timeout=1)
 
