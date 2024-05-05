@@ -40,13 +40,13 @@ except Error as e:
     print(f"{Fore.RED}Error: {e}{Style.RESET_ALL}")
     exit(1)
 
-arduino_serial = serial.Serial(port_device, 9600)
+serial = serial.Serial(port_device, 9600)
 
 last_inserted_second = None
 
 while True:
     try:
-        data = arduino_serial.readline().decode().strip()
+        data = serial.readline().decode().strip()
 
         values = data.split(';')
 
