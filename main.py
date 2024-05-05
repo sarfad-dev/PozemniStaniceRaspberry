@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+import csv
 from mysql.connector import Error
 import mysql.connector
 from dotenv import load_dotenv
@@ -44,29 +45,35 @@ serial = serial.Serial(port_device, 9600)
 
 last_inserted_second = None
 
-while True:
-    try:
-        data = serial.readline().decode().strip()
+with open('processed_data.csv', mode='w', newline='') as file:
+    writer = csv.writer(file, delimiter=';')
+    writer.writerow(['Timestamp', 'Time', 'Temperature', 'Pressure', 'Humidity', 'Latitude', 'Longitude', 'Height', 'Velocity'])
 
-        values = data.split(';')
+    while True:
+        try:
+            data = serial.readline().decode().strip()
 
-        serial_time = datetime.strptime(values[0], '%H:%M:%S') + timedelta(hours=2)
-        time_str = serial_time.strftime('%H:%M:%S')
-        current_second = serial_time.second
+            values = data.split(';')
 
-        if current_second != last_inserted_second:
-            timestamp = datetime.now()
-            insert_query = "INSERT INTO sarfad_data (timestamp, time, temperature, pressure, humidity, latitude, longitude, height, velocity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            
-            data_tuple = (timestamp, time_str, *values[1:])
-            print(data_tuple)
+            serial_time = datetime.strptime(values[0], '%H:%M:%S') + timedelta(hours=2)
+            time_str = serial_time.strftime('%H:%M:%S')
+            current_second = serial_time.second
 
-            cursor.execute(insert_query, data_tuple)
-            db.commit()
+            if current_second != last_inserted_second:
+                timestamp = datetime.now()
+                insert_query = "INSERT INTO sarfad_data (timestamp, time, temperature, pressure, humidity, latitude, longitude, height, velocity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                
+                data_tuple = (timestamp, time_str, *values[1:])
+                print(data_tuple)
 
-            last_inserted_second = current_second
-    except Exception as e:
-        print(f"Error: {e}")
+                cursor.execute(insert_query, data_tuple)
+                db.commit()
+
+                writer.writerow([timestamp, time_str, *values[1:]])
+
+                last_inserted_second = current_second
+        except Exception as e:
+            print(f"Error: {e}")
 
 cursor.close()
 db.close()
