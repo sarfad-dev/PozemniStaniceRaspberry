@@ -47,7 +47,7 @@ last_inserted_second = None
 
 with open('processed_data.csv', mode='w', newline='') as file:
     writer = csv.writer(file, delimiter=';')
-    writer.writerow(['Timestamp', 'Time', 'Temperature', 'Pressure', 'Humidity', 'Latitude', 'Longitude', 'Height', 'Velocity'])
+    writer.writerow(['Timestamp', 'Time', 'Temperature', 'Pressure', 'Humidity', 'AccelerationX', 'AccelerationY', 'AccelerationZ', 'GyroscopeX', 'GyroscopeY', 'GyroscopeZ''Latitude', 'Longitude', 'Height', 'Velocity'])
 
     while True:
         try:
@@ -61,10 +61,10 @@ with open('processed_data.csv', mode='w', newline='') as file:
 
             if current_second != last_inserted_second:
                 timestamp = datetime.now()
-                insert_query = "INSERT INTO sarfad_data (timestamp, time, temperature, pressure, humidity, latitude, longitude, height, velocity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                insert_query = "INSERT INTO sarfad_data (timestamp, time, temperature, pressure, humidity, accelerationX, accelerationY, accelerationZ, gyroscopeX, gyroscopeY, gyroscopeZ, latitude, longitude, height, velocity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 
                 data_tuple = (timestamp, time_str, *values[1:])
-                print(data_tuple)
+                #print(data_tuple)
 
                 cursor.execute(insert_query, data_tuple)
                 db.commit()
