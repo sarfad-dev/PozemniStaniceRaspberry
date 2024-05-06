@@ -61,7 +61,7 @@ with open('processed_data.csv', mode='w', newline='') as file:
 
             if current_second != last_inserted_second:
                 timestamp = datetime.now()
-                insert_query = "INSERT INTO sarfad_data (timestamp, time, temperature, pressure, humidity, accelerationX, accelerationY, accelerationZ, gyroscopeX, gyroscopeY, gyroscopeZ, latitude, longitude, height, velocity, battery) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                insert_query = "INSERT INTO data (timestamp, time, temperature, pressure, humidity, accelerationX, accelerationY, accelerationZ, gyroscopeX, gyroscopeY, gyroscopeZ, latitude, longitude, height, velocity, battery) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 
                 data_tuple = (timestamp, time_str, *values[1:])
                 #print(data_tuple)
